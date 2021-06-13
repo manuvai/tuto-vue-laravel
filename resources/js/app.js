@@ -5,6 +5,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('add-task', require('./components/AddTaskComponent.vue').default);
 import Home from './components/HomeComponent.vue';
 import Task from './components/TaskComponent.vue';
 
