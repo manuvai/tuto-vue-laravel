@@ -14,8 +14,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
-        error_log("Log");
+        $tasks = Task::orderBy('created_at', 'DESC')->paginate(3);
 
         return response()->json($tasks);
     }

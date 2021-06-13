@@ -4,7 +4,7 @@ window.Vue = require('vue');
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
-
+Vue.component('pagination', require('laravel-vue-pagination'));
 import Home from './components/HomeComponent.vue';
 import Task from './components/TaskComponent.vue';
 
