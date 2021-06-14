@@ -4,9 +4,14 @@
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-center" v-for="task in tasks.data" :key="task.id">
                 <a href="#">{{ task.name }}</a>
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editModal" @click="getTask(task.id)">
-                   Editer 
-                </button>
+                <div>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editModal" @click="getTask(task.id)">
+                        Editer 
+                    </button>
+                    <button type="button" class="btn btn-danger" @click="deleteTask(task.id)">
+                        Supprimer
+                    </button>
+                </div>
             </li>
             <edit-task-component 
                 @task-updated="refresh"
@@ -42,6 +47,11 @@ import EditTaskComponent from './EditTaskComponent.vue';
             getTask(id) {
                 axios.get('/tasks/edit/' + id)
                     .then(response => this.taskToEdit = response.data)
+                    .catch(error => console.log(error));
+            },
+            deleteTask(id) {
+                axios.delete('/tasks/' + id)
+                    .then(response => this.tasks = response.data)
                     .catch(error => console.log(error));
             },
             refresh(tasks) {
