@@ -2,9 +2,13 @@
     <div class="container">
         <add-task-component @task-added="refresh"></add-task-component>
         <ul class="list-group">
-            <li class="list-group-item" v-for="task in tasks.data" :key="task.id">
+            <li class="list-group-item d-flex justify-content-between align-center" v-for="task in tasks.data" :key="task.id">
                 <a href="#">{{ task.name }}</a>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editModal" @click="getTask(task.id)">
+                   Editer 
+                </button>
             </li>
+            <edit-task-component v-bind:taskToEdit="taskToEdit"/>
         </ul>
         <pagination :data="tasks" @pagination-change-page="getResults" class="mt-5"></pagination>
     </div> 
@@ -12,11 +16,13 @@
 
 <script>
 import AddTaskComponent from './AddTaskComponent.vue';
+import EditTaskComponent from './EditTaskComponent.vue';
     export default {
-  components: { AddTaskComponent },
+  components: { AddTaskComponent, EditTaskComponent },
         data() {
             return {
-                tasks: {}
+                tasks: {},
+                taskToEdit: ''
             }
         },
         created() {
@@ -30,6 +36,11 @@ import AddTaskComponent from './AddTaskComponent.vue';
                     .then(response => {
                         this.tasks = response.data;
                     });
+            },
+            getTask(id) {
+                axios.get('/tasks/edit/' + id)
+                    .then(response => this.taskToEdit = response.data.name)
+                    .catch(error => console.log(error));
             },
             refresh(tasks) {
                 this.tasks = tasks.data
