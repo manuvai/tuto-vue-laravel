@@ -14,9 +14,14 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::orderBy('created_at', 'DESC')->paginate(3);
+        if (request('q') !== null) {
+            $tasks['data'] = Task::where('name', 'LIKE', '%' . request('q') . '%')->get();
 
-        return response()->json($tasks);
+            return response()->json($tasks);
+        } else {
+            return $this->refresh();
+
+        }
     }
 
     /**

@@ -2082,6 +2082,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2092,7 +2097,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       tasks: {},
-      taskToEdit: ''
+      taskToEdit: '',
+      q: ''
     };
   },
   created: function created() {
@@ -2130,6 +2136,19 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    searchTask: function searchTask() {
+      var _this5 = this;
+
+      if (this.q.length > 3) {
+        axios.get('/taskslist/' + this.q).then(function (response) {
+          return _this5.tasks = response.data;
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      } else {
+        this.getResults();
+      }
     },
     refresh: function refresh(tasks) {
       this.tasks = tasks.data;
@@ -38702,6 +38721,37 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
+      _c("div", { staticClass: "form-row" }, [
+        _c("div", { staticClass: "col-row" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.q,
+                expression: "q"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              name: "",
+              placeholder: "Rechercher une tâche .."
+            },
+            domProps: { value: _vm.q },
+            on: {
+              keyup: _vm.searchTask,
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.q = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
       _c("add-task-component", { on: { "task-added": _vm.refresh } }),
       _vm._v(" "),
       _c(
