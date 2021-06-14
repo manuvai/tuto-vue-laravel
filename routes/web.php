@@ -21,3 +21,4 @@ Route::get('/', function () {
 Route::get('/taskslist', [TaskController::class, 'index']);
 Route::post('/taskslist', [TaskController::class, 'store']);
 Route::get('/tasks/edit/{id}', [TaskController::class, 'edit']);
+Route::patch('/tasks/edit/{id}', [TaskController::class, 'update']);

@@ -40,10 +40,7 @@ class TaskController extends Controller
         $task = Task::create($request->all());
 
         if ($task) {
-            
-            $tasks = Task::orderBy('created_at', 'DESC')->paginate(3);
-
-            return response()->json($tasks);
+            return $this->refresh();
         }
     }
 
@@ -80,7 +77,13 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $task = Task::find($id);
+        $task->name = request('name');
+        $task->save();
+
+        if ($task) {
+            return $this->refresh();
+        }
     }
 
     /**
@@ -92,5 +95,12 @@ class TaskController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function refresh() {
+        
+        $tasks = Task::orderBy('created_at', 'DESC')->paginate(3);
+
+        return response()->json($tasks);
     }
 }

@@ -14,13 +14,13 @@
                     <form>
                         <div class="form-group">
                             <label for="name">Nom de la tâche</label>
-                            <textarea name="name" id="name" rows="4" class="form-control" v-model="taskToEdit"></textarea>
+                            <textarea name="name" id="name" rows="4" class="form-control" v-model="taskToEdit.name"></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success" >Enregister</button>
+                    <button type="submit" class="btn btn-success" @click="update" data-dismiss="modal">Enregister</button>
                 </div>
                 </div>
             </div>
@@ -30,6 +30,16 @@
 
 <script>
 export default {
-    props: ['taskToEdit']
+    props: ['taskToEdit'],
+    methods: {
+        update() {
+            
+            axios.patch('/tasks/edit/' + this.taskToEdit.id, {
+                name: this.taskToEdit.name
+            })
+                .then(response => this.$emit('task-updated', response))
+                .catch(error => console.log(error))
+        }
+    }
 }
 </script>
